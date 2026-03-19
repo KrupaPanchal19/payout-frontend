@@ -8,6 +8,7 @@ import * as yup from "yup";
 import { api } from "@/lib/api/api";
 import { Alert } from "@/components/ui/Alert";
 import { Button } from "@/components/ui/Button";
+import { use } from "react";
 
 type Vendor = {
   _id: string;
@@ -30,9 +31,9 @@ const schema = yup.object({
   is_active: yup.boolean().default(true)
 });
 
-export default function VendorEditPage({ params }: { params: { id: string } }) {
+export default function VendorEditPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
-  const vendorId = params.id;
+  const {id:vendorId} = use(params);
 
   const { data, error, isLoading, mutate } = useSWR<VendorDetailResponse>(
     `/vendors/${vendorId}`
