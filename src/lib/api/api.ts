@@ -27,13 +27,14 @@ export const api = axios.create({
 api.interceptors.request.use((config) => {
   if (typeof window !== "undefined") {
     const token = window.localStorage.getItem("authToken");
+
     if (token) {
-      (config.headers ||= {}).Authorization = `Bearer ${token}`;
+      config.headers.set("Authorization", `Bearer ${token}`);
     }
   }
+
   return config;
 });
-
 // Normalize backend errors so UI can always show a clear message.
 // For responses like:
 // { code: "UNAUTHORIZED", message: "Invalid email or password", details: null }
